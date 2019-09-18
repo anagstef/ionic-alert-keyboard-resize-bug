@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { ConferenceData } from '../../providers/conference-data';
 import { ActivatedRoute } from '@angular/router';
 import { UserData } from '../../providers/user-data';
+import { Observable } from 'rxjs';
+import { AlertController } from '@ionic/angular';
 
 @Component({
   selector: 'page-session-detail',
@@ -16,7 +18,8 @@ export class SessionDetailPage {
   constructor(
     private dataProvider: ConferenceData,
     private userProvider: UserData,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private _alertController: AlertController
   ) {}
   sessionClick(item: string) {
     console.log('Clicked', item);
@@ -57,5 +60,31 @@ export class SessionDetailPage {
   }
   ionViewDidEnter() {
     this.defaultHref = `/app/tabs/schedule`;
+  }
+
+  public canDeactivate(): Observable<boolean> {
+    return new Observable(subscriber => {
+      this._alertController.create({
+        buttons: [
+          {
+            role: 'cancel',
+            text: 'No',
+            handler: () => {
+              subscriber.next(false);
+              subscriber.complete();
+            }
+          },
+          {
+            text: 'Yes',
+            handler: () => {
+              subscriber.next(true);
+              subscriber.complete();
+            }
+          }
+        ],
+        subHeader: 'Are you sure you wanna go back?',
+        header: 'Go Back?',
+      }).then(alert => alert.present());
+    });
   }
 }

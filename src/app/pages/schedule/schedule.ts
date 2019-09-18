@@ -22,6 +22,7 @@ export class SchedulePage implements OnInit {
   shownSessions: any = [];
   groups: any = [];
   confDate: string;
+  items = [];
 
   constructor(
     public alertCtrl: AlertController,
@@ -35,6 +36,7 @@ export class SchedulePage implements OnInit {
 
   ngOnInit() {
     this.updateSchedule();
+    this.items = ['a', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b', 'b'];
   }
 
   updateSchedule() {
